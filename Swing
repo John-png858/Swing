@@ -1,0 +1,108 @@
+import java.sql.*;
+
+/**
+ * This class represents a registration form with GUI elements.
+ *
+ * @author admin
+ */
+public class RegistrationForm extends javax.swing.JFrame {
+    private String gender;
+
+    /**
+     * Creates a new instance of the RegistrationForm.
+     */
+    public RegistrationForm() {
+        initComponents();
+    }
+
+    /**
+     * Initializes the form components.
+     */
+    @SuppressWarnings("unchecked")
+    private void initComponents() {
+        // Component declarations and layout setup...
+
+        // Event handling for radio buttons and buttons...
+
+        // Main method to handle form submission...
+    }
+
+    /**
+     * Handles the action when the male radio button is selected.
+     */
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO: Add handling code here if needed
+    }
+
+    /**
+     * Handles the action when the submit button is pressed.
+     */
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+        // Extracts form data...
+        String name = jTextField1.getText();
+        String mobile = jTextField2.getText();
+
+        if (jRadioButton1.isSelected()) {
+            gender = jRadioButton1.getText();
+        } else if (jRadioButton2.isSelected()) {
+            gender = jRadioButton2.getText();
+        }
+
+        String day = (String) jComboBox1.getSelectedItem();
+        String month = (String) jComboBox2.getSelectedItem();
+        String year = (String) jComboBox3.getSelectedItem();
+        String date = day + "-" + month + "-" + year;
+
+        String address = jTextField3.getText();
+
+        // Displays form data in the text area...
+        jTextArea1.append("Name: " + name + "\n");
+        jTextArea1.append("Mobile: " + mobile + "\n");
+        jTextArea1.append("Gender: " + gender + "\n");
+        jTextArea1.append("DOB: " + date + "\n");
+        jTextArea1.append("Address: " + address + "\n");
+
+        // Displays a message if terms and conditions are accepted...
+        if (jCheckBox1.isSelected()) {
+            JOptionPane.showMessageDialog(null, "You Accepted Terms And Condition", "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        // Connects to the database and inserts form data...
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/formregistration", "root", "");
+
+            String query = "insert into formregistration(name,mobile,gender,dob,address) values(?,?,?,?,?)";
+            PreparedStatement statement = connect.prepareStatement(query);
+
+            statement.setString(1, name);
+            statement.setString(2, mobile);
+            statement.setString(3, gender);
+            statement.setString(4, date);
+            statement.setString(5, address);
+
+            statement.executeUpdate();
+            connect.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * The main method that creates and displays the registration form.
+     */
+    public static void main(String args[]) {
+        // Look and feel setting code...
+
+        // Create and display the form...
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new RegistrationForm().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify                     
+    // Component variables...
+    // End of variables declaration                   
+}
